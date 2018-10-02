@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondColor">
+
+    <ImageView
+        android:id="@+id/galgeBillede"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Description"
+        app:srcCompat="@drawable/start"
+        tools:layout_editor_absoluteY="88dp"
+        android:contentDescription="The Hanged Man."/>
+
+    <TextView
+        android:id="@+id/Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Gæt ordet!"
+        app:layout_constraintBottom_toTopOf="@+id/galgeBillede"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/rigtigtOrd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="_ _ _ _ _ "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/galgeBillede" />
+
+    <TextView
+        android:id="@+id/gaet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="du har gættet på: a, b, c"
+        app:layout_constraintBottom_toTopOf="@+id/indtastSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rigtigtOrd" />
+
+    <LinearLayout
+        android:id="@+id/indtastSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gaet">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputBoks"
+            android:layout_width="329dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:hint="Indtast bogstav her">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/input"
+                android:layout_width="332dp"
+                android:layout_height="wrap_content"
+                android:hint="..." />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/forsoegKnap"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Prøv!" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Hangman 2.0</string>
+    <string name="playBtn">"Let's play!"</string>
+    <string name="settingsBtn">Settings</string>
+    <string name="scoresBtn">Highscores</string>
+    <string name="title">HANGMAN</string>
+</resources>
