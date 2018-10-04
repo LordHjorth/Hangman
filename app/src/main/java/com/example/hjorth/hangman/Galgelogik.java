@@ -12,9 +12,9 @@ import java.util.Random;
 public class Galgelogik {
 
     /** AHT afprøvning er muligeOrd synlig på pakkeniveau */
-    ArrayList<String> muligeOrd = new ArrayList<String>();
+    private ArrayList<String> muligeOrd = new ArrayList<>();
     private String ordet;
-    private ArrayList<String> brugteBogstaver = new ArrayList<String>();
+    private ArrayList<String> brugteBogstaver = new ArrayList<>();
     private String synligtOrd;
     private int antalForkerteBogstaver;
     private boolean sidsteBogstavVarKorrekt;
@@ -56,20 +56,20 @@ public class Galgelogik {
 
     public Galgelogik() {
         muligeOrd.add("bil");
-        muligeOrd.add("computer");
-        muligeOrd.add("programmering");
-        muligeOrd.add("motorvej");
-        muligeOrd.add("busrute");
-        muligeOrd.add("gangsti");
-        muligeOrd.add("skovsnegl");
-        muligeOrd.add("solsort");
-        muligeOrd.add("seksten");
-        muligeOrd.add("sytten");
-        muligeOrd.add("atten");
+        //muligeOrd.add("computer");
+        //muligeOrd.add("programmering");
+        //muligeOrd.add("motorvej");
+        //muligeOrd.add("busrute");
+        //muligeOrd.add("gangsti");
+        //muligeOrd.add("skovsnegl");
+        //muligeOrd.add("solsort");
+        //muligeOrd.add("seksten");
+        //muligeOrd.add("sytten");
+        //muligeOrd.add("atten");
         nulstil();
     }
 
-    public void nulstil() {
+    private void nulstil() {
         brugteBogstaver.clear();
         antalForkerteBogstaver = 0;
         spilletErVundet = false;
@@ -85,9 +85,9 @@ public class Galgelogik {
         for (int n = 0; n < ordet.length(); n++) {
             String bogstav = ordet.substring(n, n + 1);
             if (brugteBogstaver.contains(bogstav)) {
-                synligtOrd = synligtOrd + bogstav;
+                synligtOrd = synligtOrd.concat(bogstav);
             } else {
-                synligtOrd = synligtOrd + "*";
+                synligtOrd = synligtOrd.concat("*");
                 spilletErVundet = false;
             }
         }
@@ -140,7 +140,7 @@ public class Galgelogik {
         StringBuilder sb = new StringBuilder();
         String linje = br.readLine();
         while (linje != null) {
-            sb.append(linje + "\n");
+            sb.append(linje.concat("\n"));
             linje = br.readLine();
         }
         return sb.toString();
@@ -166,7 +166,7 @@ public class Galgelogik {
         System.out.println("data = " + data);
         System.out.println("data = " + Arrays.asList(data.split("\\s+")));
         muligeOrd.clear();
-        muligeOrd.addAll(new HashSet<String>(Arrays.asList(data.split(" "))));
+        muligeOrd.addAll(new HashSet<>(Arrays.asList(data.split(" "))));
 
         System.out.println("muligeOrd = " + muligeOrd);
         nulstil();

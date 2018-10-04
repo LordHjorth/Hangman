@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondColor">
@@ -10,25 +9,26 @@
     <ImageView
         android:id="@+id/galgeBillede"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_height="233dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/the_hanged_man"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Description"
-        app:srcCompat="@drawable/start"
-        tools:layout_editor_absoluteY="88dp"
-        android:contentDescription="The Hanged Man."/>
+        app:layout_constraintBottom_toTopOf="@id/rigtigtOrd"
+        app:srcCompat="@drawable/start" />
 
     <TextView
         android:id="@+id/Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Gæt ordet!"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/guess_the_word"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/galgeBillede"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,58 +41,311 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="_ _ _ _ _ "
+        android:text="@string/empty_string"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/galgeBillede" />
+        app:layout_constraintTop_toBottomOf="@+id/galgeBillede"
+        app:layout_constraintBottom_toTopOf="@id/gaet"/>
 
     <TextView
         android:id="@+id/gaet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="du har gættet på: a, b, c"
-        app:layout_constraintBottom_toTopOf="@+id/indtastSection"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/guesses"
+        app:layout_constraintBottom_toTopOf="@+id/ord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rigtigtOrd" />
+
+    <TextView
+        android:id="@+id/ord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/empty_string"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/indtastSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gaet" />
 
     <LinearLayout
         android:id="@+id/indtastSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gaet">
+        app:layout_constraintTop_toBottomOf="@id/ord">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputBoks"
-            android:layout_width="329dp"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:hint="Indtast bogstav her">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/input"
-                android:layout_width="332dp"
-                android:layout_height="wrap_content"
-                android:hint="..." />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/forsoegKnap"
-            android:layout_width="70dp"
+        <LinearLayout
+            android:id="@+id/firstRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Prøv!" />
+            android:orientation="horizontal"
+            android:weightSum="11">
+
+            <Button
+                android:id="@+id/q"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyQ"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/w"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyW"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyE"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyR"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyT"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/y"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyY"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/u"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyU"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/i"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyI"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/o"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyO"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyP"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/å"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyÅ"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/secondRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="11">
+
+
+            <Button
+                android:id="@+id/a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyA"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyS"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyD"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyF"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyG"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyH"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/j"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyJ"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/k"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyK"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyL"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/æ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyÆ"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/ø"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyØ"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/thirdRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="11">
+
+
+            <Button
+                android:id="@+id/z"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyZ"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyX"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyC"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyV"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyB"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/n"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyN"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/keyM"
+                android:textSize="12sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
