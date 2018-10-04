@@ -2,7 +2,6 @@ package com.example.hjorth.hangman;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +28,8 @@ public class Spille_akt extends AppCompatActivity implements View.OnClickListene
 
     List<Integer> gameStages;
 
+    private final String winningMessage = "EEEEEEEEY! Congrats! You won!";
+    private final String losingMessage = "You're a fucking loser.";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class Spille_akt extends AppCompatActivity implements View.OnClickListene
 
         game = new Galgelogik();
 
-        gameOn();
+        newGame();
 
     }
 
@@ -173,11 +174,11 @@ public class Spille_akt extends AppCompatActivity implements View.OnClickListene
                         rigtigtOrd.setText(game.getSynligtOrd());
                     } else {
                         //Starts playing the fire crackling
-                        if(!media.isPlaying()){
+                        if (!media.isPlaying()) {
                             media.start();
                         }
                         //Set the volume louder and louder for each wrong answer.
-                        if(soundLevel<10){
+                        if (soundLevel < 10) {
                             soundLevel++;
                         }
                         volume = (float) (1 - (Math.log(MAX_VOLUME - soundLevel) / Math.log(MAX_VOLUME)));
@@ -197,31 +198,28 @@ public class Spille_akt extends AppCompatActivity implements View.OnClickListene
                     gaet.setText(newText.concat(", ".concat(quess)));
 
                 }
-                if(game.erSpilletSlut()){
-                    if(game.erSpilletVundet()){
+                if (game.erSpilletSlut()) {
+                    if (game.erSpilletVundet()) {
                         changeSound(R.raw.win);
-                        Toast.makeText(this, "EEEEEEEEY! Congrats! You won!", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                        Toast.makeText(this, winningMessage, Toast.LENGTH_LONG).show();
+                    } else {
                         changeSound(R.raw.lose);
-                        Toast.makeText(this, "You're a fucking loser.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, losingMessage, Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
         }
     }
 
-    private void changeSound(int resID){
+    private void changeSound(int resID) {
         media.stop();
         media = MediaPlayer.create(this, resID);
         media.start();
     }
 
-    private void gameOn() {
+    private void newGame() {
 
-        if (game.erSpilletSlut()) {
-            game = new Galgelogik();
-        }
+        game = new Galgelogik();
         rigtigtOrd.setText(game.getSynligtOrd());
         gaet.setText("Du har ikke gættet endnu!");
 
