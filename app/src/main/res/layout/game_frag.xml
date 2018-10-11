@@ -285,9 +285,17 @@
             android:id="@+id/thirdRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="11">
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/empty2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".6"
+                android:text=" "
+                android:textSize="12sp"
+                android:contextClickable="false"
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/z"
@@ -344,6 +352,15 @@
                 android:layout_weight="1"
                 android:text="@string/keyM"
                 android:textSize="12sp" />
+            <Button
+                android:id="@+id/empty1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text=" "
+                android:textSize="12sp"
+                android:contextClickable="false"
+                android:visibility="invisible"/>
 
         </LinearLayout>
     </LinearLayout>

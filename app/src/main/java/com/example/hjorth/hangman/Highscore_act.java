@@ -9,7 +9,7 @@ public class Highscore_act extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_act);
+        setContentView(R.layout.game_frag);
     }
 
 
