@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Galgelogik {
+//THIS CLASS IS BORROWED FROM https://github.com/nordfalk/Galgeleg/blob/master/src/galgeleg/Galgelogik.java
+public class Game_logic {
 
     /** AHT afprøvning er muligeOrd synlig på pakkeniveau */
     private ArrayList<String> muligeOrd = new ArrayList<>();
@@ -20,6 +21,8 @@ public class Galgelogik {
     private boolean sidsteBogstavVarKorrekt;
     private boolean spilletErVundet;
     private boolean spilletErTabt;
+
+    private final String[] words = {"Ø", "To", "bil", "Æble", "computer", "programmering", "motorvej", "busrute", "gangsti", "skovsnegl", "solsort", "seksten", "sytten", "atten"};
 
 
     public ArrayList<String> getBrugteBogstaver() {
@@ -54,21 +57,35 @@ public class Galgelogik {
         return spilletErTabt || spilletErVundet;
     }
 
-    public Galgelogik() {
-        muligeOrd.add("bil");
-        //muligeOrd.add("computer");
-        //muligeOrd.add("programmering");
-        //muligeOrd.add("motorvej");
-        //muligeOrd.add("busrute");
-        //muligeOrd.add("gangsti");
-        //muligeOrd.add("skovsnegl");
-        //muligeOrd.add("solsort");
-        //muligeOrd.add("seksten");
-        //muligeOrd.add("sytten");
-        //muligeOrd.add("atten");
+    //modified
+    public Game_logic(String level) {
+        getGameLevel(level);
         nulstil();
     }
 
+    private void getGameLevel(String level){
+        int minLength = 1;
+        int maxLength = 12;
+
+        if(level.equals("Beginner")){
+            minLength = 1;
+            maxLength = 4;
+        }
+        if(level.equals("Intermediate")){
+            minLength = 5;
+            maxLength = 7;
+        }
+        if(level.equals("Pro")){
+            minLength = 8;
+            maxLength = 12;
+        }
+
+        for(String word : words){
+            if(word.length() >= minLength && word.length() <= maxLength){
+                muligeOrd.add(word);
+            }
+        }
+    }
     private void nulstil() {
         brugteBogstaver.clear();
         antalForkerteBogstaver = 0;

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Hovedmenu_akt extends AppCompatActivity implements View.OnClickListener {
+public class Main_menu_act extends AppCompatActivity implements View.OnClickListener {
 
     Button playBtn, settingsBtn, scoresBtn;
     MediaPlayer welcomeSound;
@@ -15,7 +15,7 @@ public class Hovedmenu_akt extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hovedmenu_akt);
+        setContentView(R.layout.activity_main_menu_act);
 
         playBtn = findViewById(R.id.PlayBtn);
         settingsBtn = findViewById(R.id.SettingsBtn);
@@ -36,7 +36,7 @@ public class Hovedmenu_akt extends AppCompatActivity implements View.OnClickList
         if(v == playBtn){
             //go to play
             welcomeSound.start();
-            Intent i = new Intent(this, Spille_akt.class);
+            Intent i = new Intent(this, Game_act.class);
             startActivity(i);
         }
         else if(v == settingsBtn){
@@ -44,7 +44,7 @@ public class Hovedmenu_akt extends AppCompatActivity implements View.OnClickList
         }
         else if(v == scoresBtn){
             //go to scores
-            Intent i = new Intent(this, Highscore_akt.class);
+            Intent i = new Intent(this, Highscore_act.class);
             startActivity(i);
         }
     }

@@ -8,7 +8,14 @@
     <string name="the_hanged_man">The Hanged Man</string>
     <string name="guess_the_word">Guess the word!</string>
     <string name="empty_string"> </string>
-
+    <string name="new_game_question">Play again?</string>
+    <string name="new_game_yes">Yes please!</string>
+    <string name="new_game_no">"Nah, I'm done for now"</string>
+    <string name="easy">Beginner</string>
+    <string name="medium">Intermediate</string>
+    <string name="hard">Pro</string>
+    <string name="choose_difficulty">Choose level!</string>
+    <string name="next">Next</string>
 
     <string name="keyQ">q</string>
     <string name="keyW">w</string>
