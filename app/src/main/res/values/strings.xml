@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Hangman 2.0</string>
     <string name="playBtn">"Let's play!"</string>
-    <string name="settingsBtn">Settings</string>
-    <string name="rules">Rules</string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
     <string name="scoresBtn">Highscores</string>
     <string name="title">HANGMAN</string>
     <string name="guesses">"Your guesses: "</string>
@@ -17,6 +17,8 @@
     <string name="hard">Pro</string>
     <string name="choose_difficulty">Choose level!</string>
     <string name="next">Next</string>
+    <string name="play">Play!</string>
+    <string name="musicOption">Enable music!</string>
 
     <string name="keyQ">q</string>
     <string name="keyW">w</string>
@@ -46,6 +48,5 @@
     <string name="keyV">v</string>
     <string name="keyB">b</string>
     <string name="keyN">n</string>
-    <string name="keyM">M</string>
-
+    <string name="keyM">m</string>
 </resources>

@@ -22,7 +22,7 @@ public class Game_logic {
     private boolean spilletErVundet;
     private boolean spilletErTabt;
 
-    private final String[] words = {"Ø", "To", "bil", "Æble", "computer", "programmering", "motorvej", "busrute", "gangsti", "skovsnegl", "solsort", "seksten", "sytten", "atten"};
+    private final String[] words = {"ø", "to", "bil", "æble", "computer", "programmering", "motorvej", "busrute", "gangsti", "skovsnegl", "solsort", "seksten", "sytten", "atten"};
 
 
     public ArrayList<String> getBrugteBogstaver() {
@@ -104,7 +104,7 @@ public class Game_logic {
             if (brugteBogstaver.contains(bogstav)) {
                 synligtOrd = synligtOrd.concat(bogstav);
             } else {
-                synligtOrd = synligtOrd.concat("*");
+                synligtOrd = synligtOrd.concat("_ ");
                 spilletErVundet = false;
             }
         }
