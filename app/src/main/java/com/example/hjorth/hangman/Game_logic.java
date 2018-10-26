@@ -59,7 +59,7 @@ public class Game_logic {
 
     //modified
     public Game_logic(String level) {
-        getGameLevel(level);
+        getGameLevel(level); //Static words
         nulstil();
     }
 
@@ -77,7 +77,7 @@ public class Game_logic {
         }
         if(level.equals("Pro")){
             minLength = 8;
-            maxLength = 12;
+            maxLength = 100;
         }
 
         for(String word : words){
@@ -86,6 +86,7 @@ public class Game_logic {
             }
         }
     }
+
     private void nulstil() {
         brugteBogstaver.clear();
         antalForkerteBogstaver = 0;
@@ -94,7 +95,6 @@ public class Game_logic {
         ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
         opdaterSynligtOrd();
     }
-
 
     private void opdaterSynligtOrd() {
         synligtOrd = "";
@@ -150,7 +150,6 @@ public class Game_logic {
         System.out.println("---------- ");
     }
 
-
     public static String hentUrl(String url) throws IOException {
         System.out.println("Henter data fra " + url);
         BufferedReader br = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
@@ -162,7 +161,6 @@ public class Game_logic {
         }
         return sb.toString();
     }
-
 
     public void hentOrdFraDr() throws Exception {
         String data = hentUrl("https://dr.dk");
