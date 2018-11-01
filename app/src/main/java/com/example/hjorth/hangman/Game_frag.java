@@ -1,7 +1,9 @@
 package com.example.hjorth.hangman;
 
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +43,8 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     private final String winningMessage = "EEEEEEEEY! Congrats! You won!";
     private final String losingMessage = "You're a loser.";
+
+    Highscore score;
 
     @Nullable
     @Override
@@ -129,6 +134,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         media = new MediaPlayer();
 
         //Starts the game
+
         newGame();
 
         return view;
@@ -192,6 +198,8 @@ public class Game_frag extends Fragment implements View.OnClickListener {
                 b.putString("result", losingMessage);
             }
 
+            System.out.println("The word was: " + game.getOrdet() + "\nScore: " + score.calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver() ,game.getAntalForkerteBogstaver()));
+
             changeSound(musicID);
             if(Settings_frag.isMusicEnabled()){
                 media.start();
@@ -206,7 +214,9 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     }
 
     private void changeSound(int resID) {
-        media.stop();
+        if(media.isPlaying())
+            media.stop();
+
         media = MediaPlayer.create(getActivity(), resID);
     }
 
@@ -224,30 +234,36 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         if(!game.getBrugteBogstaver().contains(guess)){
             game.gætBogstav(guess);
             if (game.erSidsteBogstavKorrekt()) {
-                Toast.makeText(getActivity(), guess + " was correct!", Toast.LENGTH_SHORT).show();
-                correctWord.setText(game.getSynligtOrd());
+                correctGuess(guess);
             } else {
-                //Starts playing the fire crackling
-                if (!media.isPlaying() && Settings_frag.isMusicEnabled()) {
-                    media.start();
-                }
-                //Set the volume louder and louder for each wrong answer.
-                if (soundLevel < 10) {
-                    soundLevel++;
-                }
-                volume = (float) (1 - (Math.log(MAX_VOLUME - soundLevel) / Math.log(MAX_VOLUME)));
-                media.setVolume(volume, volume);
-
-                //Updates the image for each wrong.
-                changeImage();
-
-                //Prints message
-                Toast.makeText(getActivity(), guess + " was wrong!", Toast.LENGTH_SHORT).show();
+                wrongGuess(guess);
             }
-
-            String newText = guesses.getText().toString();
-            guesses.setText(newText.concat(", ".concat(guess)));
+            guesses.setText(guesses.getText().toString().concat(", ".concat(guess)));
         }
+    }
+
+    private void correctGuess(String guess){
+        Toast.makeText(getActivity(), guess + " was correct!", Toast.LENGTH_SHORT).show();
+        correctWord.setText(game.getSynligtOrd());
+    }
+
+    private void wrongGuess(String guess){
+        //Starts playing the fire crackling
+        if (!media.isPlaying() && Settings_frag.isMusicEnabled()) {
+            media.start();
+        }
+        //Set the volume louder and louder for each wrong answer.
+        if (soundLevel < 10) {
+            soundLevel++;
+        }
+        volume = (float) (1 - (Math.log(MAX_VOLUME - soundLevel) / Math.log(MAX_VOLUME)));
+        media.setVolume(volume, volume);
+
+        //Updates the image for each wrong.
+        changeImage();
+
+        //Prints message
+        Toast.makeText(getActivity(), guess + " was wrong!", Toast.LENGTH_SHORT).show();
     }
 
     public void newGame() {
@@ -258,10 +274,11 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         {
             level = bundle.getString("level");
         }
+        game = new Game_logic();
 
-        game = new Game_logic(level);
+        getWords(level);
 
-        correctWord.setText(game.getSynligtOrd());
+        score = new Highscore();
 
         guesses.setText("You haven't guessed yet!");
 
@@ -269,6 +286,33 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         soundLevel = 1;
         media.setLooping(true);
         media.setVolume(soundLevel, soundLevel);
+    }
+
+    public void getWords(String level) {
+
+        new AsyncTask()  {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    game.hentOrdFraDr(level);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                System.out.println("pre execute");
+                correctWord.setText("Loading...");
+            }
+
+            @Override
+            protected void onPostExecute(Object object) {
+                System.out.println("post execute");
+                correctWord.setText(game.getSynligtOrd());
+            }
+        }.execute();
     }
 }
 

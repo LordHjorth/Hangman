@@ -1,5 +1,10 @@
 package com.example.hjorth.hangman;
 
+import android.os.AsyncTask;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,16 +19,15 @@ public class Game_logic {
 
     /** AHT afprøvning er muligeOrd synlig på pakkeniveau */
     private ArrayList<String> muligeOrd = new ArrayList<>();
+    private ArrayList<String> tempWords = new ArrayList<>();
     private String ordet;
     private ArrayList<String> brugteBogstaver = new ArrayList<>();
     private String synligtOrd;
     private int antalForkerteBogstaver;
+    private int antalKorrekteBogstaver;
     private boolean sidsteBogstavVarKorrekt;
     private boolean spilletErVundet;
     private boolean spilletErTabt;
-
-    private final String[] words = {"ø", "to", "bil", "æble", "computer", "programmering", "motorvej", "busrute", "gangsti", "skovsnegl", "solsort", "seksten", "sytten", "atten"};
-
 
     public ArrayList<String> getBrugteBogstaver() {
         return brugteBogstaver;
@@ -39,6 +43,10 @@ public class Game_logic {
 
     public int getAntalForkerteBogstaver() {
         return antalForkerteBogstaver;
+    }
+
+    public int getAntalKorrekteBogstaver() {
+        return antalKorrekteBogstaver;
     }
 
     public boolean erSidsteBogstavKorrekt() {
@@ -58,33 +66,8 @@ public class Game_logic {
     }
 
     //modified
-    public Game_logic(String level) {
-        getGameLevel(level); //Static words
-        nulstil();
-    }
+    public Game_logic() {
 
-    private void getGameLevel(String level){
-        int minLength = 1;
-        int maxLength = 12;
-
-        if(level.equals("Beginner")){
-            minLength = 1;
-            maxLength = 4;
-        }
-        if(level.equals("Intermediate")){
-            minLength = 5;
-            maxLength = 7;
-        }
-        if(level.equals("Pro")){
-            minLength = 8;
-            maxLength = 100;
-        }
-
-        for(String word : words){
-            if(word.length() >= minLength && word.length() <= maxLength){
-                muligeOrd.add(word);
-            }
-        }
     }
 
     private void nulstil() {
@@ -95,6 +78,7 @@ public class Game_logic {
         ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
         opdaterSynligtOrd();
     }
+
 
     private void opdaterSynligtOrd() {
         synligtOrd = "";
@@ -125,6 +109,7 @@ public class Game_logic {
 
         if (ordet.contains(bogstav)) {
             sidsteBogstavVarKorrekt = true;
+            antalKorrekteBogstaver = antalKorrekteBogstaver + 1;
             System.out.println("Bogstavet var korrekt: " + bogstav);
         } else {
             // Vi gættede på et bogstav der ikke var i ordet.
@@ -162,28 +147,61 @@ public class Game_logic {
         return sb.toString();
     }
 
-    public void hentOrdFraDr() throws Exception {
-        String data = hentUrl("https://dr.dk");
-        //System.out.println("data = " + data);
+    public void hentOrdFraDr(String level) throws Exception {
+        if(muligeOrd.isEmpty() || muligeOrd.size() < 1) {
 
-        data = data.substring(data.indexOf("<body")). // fjern headere
-                replaceAll("<.+?>", " ").toLowerCase(). // fjern tags
-                replaceAll("&#198;", "æ"). // erstat HTML-tegn
-                replaceAll("&#230;", "æ"). // erstat HTML-tegn
-                replaceAll("&#216;", "ø"). // erstat HTML-tegn
-                replaceAll("&#248;", "ø"). // erstat HTML-tegn
-                replaceAll("&oslash;", "ø"). // erstat HTML-tegn
-                replaceAll("&#229;", "å"). // erstat HTML-tegn
-                replaceAll("[^a-zæøå]", " "). // fjern tegn der ikke er bogstaver
-                replaceAll(" [a-zæøå] "," "). // fjern 1-bogstavsord
-                replaceAll(" [a-zæøå][a-zæøå] "," "); // fjern 2-bogstavsord
+            String data = hentUrl("https://www.dr.dk");
+            //System.out.println("data = " + data);
 
-        System.out.println("data = " + data);
-        System.out.println("data = " + Arrays.asList(data.split("\\s+")));
-        muligeOrd.clear();
-        muligeOrd.addAll(new HashSet<>(Arrays.asList(data.split(" "))));
+            data = data.substring(data.indexOf("<body")). // fjern headere
+                    replaceAll("<.+?>", " ").toLowerCase(). // fjern tags
+                    replaceAll("&#198;", "æ"). // erstat HTML-tegn
+                    replaceAll("&#230;", "æ"). // erstat HTML-tegn
+                    replaceAll("&#216;", "ø"). // erstat HTML-tegn
+                    replaceAll("&#248;", "ø"). // erstat HTML-tegn
+                    replaceAll("&oslash;", "ø"). // erstat HTML-tegn
+                    replaceAll("&#229;", "å"). // erstat HTML-tegn
+                    replaceAll("[^a-zæøå]", " "). // fjern tegn der ikke er bogstaver
+                    replaceAll(" [a-zæøå] ", " "). // fjern 1-bogstavsord
+                    replaceAll(" [a-zæøå][a-zæøå] ", " "); // fjern 2-bogstavsord
 
-        System.out.println("muligeOrd = " + muligeOrd);
-        nulstil();
+            System.out.println("data = " + data);
+            System.out.println("data = " + Arrays.asList(data.split("\\s+")));
+            tempWords.clear();
+            muligeOrd.clear();
+            tempWords.addAll(new HashSet<>(Arrays.asList(data.split(" "))));
+
+            sortWordsByLevel(level);
+
+            System.out.println("muligeOrd = " + muligeOrd);
+
+            nulstil();
+        }
     }
+
+    private void sortWordsByLevel(String level){
+        int minLength = 0;
+        int maxLength = 12;
+
+        if(level.equals("Beginner")){
+            minLength = 3;
+            maxLength = 6;
+        }
+        if(level.equals("Intermediate")){
+            minLength = 7;
+            maxLength = 10;
+        }
+        if(level.equals("Pro")){
+            minLength = 11;
+            maxLength = 100;
+        }
+
+        for(String word : tempWords){
+            if(word.length() >= minLength && word.length() <= maxLength){
+                muligeOrd.add(word);
+            }
+        }
+    }
+
+
 }

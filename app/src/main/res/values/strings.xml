@@ -5,7 +5,7 @@
     <string name="help">Help</string>
     <string name="scoresBtn">Highscores</string>
     <string name="title">HANGMAN</string>
-    <string name="guesses">"Your guesses: "</string>
+    <string name="guesses">"Your guesses: \n"</string>
     <string name="the_hanged_man">The Hanged Man</string>
     <string name="guess_the_word">Guess the word!</string>
     <string name="empty_string"> </string>
