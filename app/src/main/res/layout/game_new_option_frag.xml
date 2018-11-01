@@ -27,6 +27,16 @@
             android:textColor="@color/colorAccent"/>
 
         <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginBottom="25dp"
+            android:textAlignment="center"
+            android:text=""
+            android:textColor="@color/colorAccent" />
+
+        <TextView
             android:id="@+id/newGameQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

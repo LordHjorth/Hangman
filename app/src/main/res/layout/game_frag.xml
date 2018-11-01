@@ -46,7 +46,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/galgeBillede"
-        app:layout_constraintBottom_toTopOf="@id/gaet"/>
+        app:layout_constraintBottom_toTopOf="@id/gaet"
+        android:textColor="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/gaet"
@@ -58,6 +59,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/guesses"
         android:textSize="20sp"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/ord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,8 +8,8 @@ import android.widget.Button;
 
 public class Main_menu_act extends AppCompatActivity implements View.OnClickListener {
 
-    Button helpBtn, settingsBtn, scoresBtn, playBtn;
-    Fragment playFrag, settingsFrag, helpFrag, scoreFrag;
+    private Button helpBtn, settingsBtn, scoresBtn, playBtn;
+    private Fragment playFrag, settingsFrag, helpFrag, scoreFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

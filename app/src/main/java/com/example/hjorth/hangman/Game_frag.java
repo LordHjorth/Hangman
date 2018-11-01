@@ -3,7 +3,6 @@ package com.example.hjorth.hangman;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,34 +16,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 public class Game_frag extends Fragment implements View.OnClickListener {
 
-    Game_logic game;
+    private Game_logic game;
 
-    ImageView gallow;
-    Button q, w, e, r, t, y, u, i, o, p, å, a, s, d, f, g, h, j, k, l, æ, ø, z, x, c, v, b, n, m;
-    TextView guesses, correctWord;
+    private ImageView gallow;
+    private Button q, w, e, r, t, y, u, i, o, p, å, a, s, d, f, g, h, j, k, l, æ, ø, z, x, c, v, b, n, m;
+    private TextView guesses, correctWord;
 
-    MediaPlayer media;
+    private MediaPlayer media;
 
-    String level;
+    private String level;
 
-    Game_new_frag newGameOption;
+    private Game_new_frag newGameOption;
 
     private final static int MAX_VOLUME = 8;
     private float volume;
     private int soundLevel = 1;
 
-    List<Integer> gameStages;
+    private List<Integer> gameStages;
 
     private final String winningMessage = "EEEEEEEEY! Congrats! You won!";
     private final String losingMessage = "You're a loser.";
 
-    Highscore score;
+    private Highscore score;
 
     @Nullable
     @Override
@@ -197,6 +194,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
                 musicID = R.raw.lose;
                 b.putString("result", losingMessage);
             }
+            b.putString("score", "You're score was: " + score.calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver() ,game.getAntalForkerteBogstaver()));
 
             System.out.println("The word was: " + game.getOrdet() + "\nScore: " + score.calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver() ,game.getAntalForkerteBogstaver()));
 

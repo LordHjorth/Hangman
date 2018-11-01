@@ -16,12 +16,11 @@ public class Game_level_frag extends Fragment implements View.OnClickListener {
 
     private Button next;
 
-    RadioGroup level;
-    RadioButton beginner, intermediate, pro;
+    private RadioButton beginner, intermediate, pro;
 
-    MediaPlayer media;
+    private MediaPlayer media;
 
-    Game_frag playGame;
+    private Game_frag playGame;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,7 +31,6 @@ public class Game_level_frag extends Fragment implements View.OnClickListener {
         next = view.findViewById(R.id.next);
         next.setOnClickListener(this);
 
-        level = view.findViewById(R.id.level);
         beginner = view.findViewById(R.id.easy);
         intermediate = view.findViewById(R.id.medium);
         pro = view.findViewById(R.id.hard);

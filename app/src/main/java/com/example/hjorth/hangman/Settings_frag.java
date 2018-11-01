@@ -11,7 +11,8 @@ import android.widget.Switch;
 public class Settings_frag  extends Fragment implements CompoundButton.OnCheckedChangeListener{
 
     public static boolean musicEnabled = true;
-    Switch musicOption;
+    private Switch musicOption;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.settings_frag, container, false);
