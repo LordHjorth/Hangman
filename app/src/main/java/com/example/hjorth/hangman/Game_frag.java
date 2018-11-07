@@ -1,5 +1,7 @@
 package com.example.hjorth.hangman;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,14 +9,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +46,12 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     private final String winningMessage = "EEEEEEEEY! Congrats! You won!";
     private final String losingMessage = "You're a loser.";
 
+    private Highscore_frag highscore_frag;
     private Highscore score;
+
+    private String player_name = "Unkown";
+
+    private AlertDialog.Builder dialogBuilder;
 
     @Nullable
     @Override
@@ -50,6 +60,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
         newGameOption = new Game_new_frag();
 
+        //region Keyboard initializer
         q = view.findViewById(R.id.q);
         q.setOnClickListener(this);
         w = view.findViewById(R.id.w);
@@ -108,12 +119,27 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         n.setOnClickListener(this);
         m = view.findViewById(R.id.m);
         m.setOnClickListener(this);
+        //endregion
+
+        //region Dialog initializer
+        dialogBuilder = new AlertDialog.Builder(getActivity());
+        final EditText input = new EditText(getActivity());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        dialogBuilder.setView(input);
+
+        // Set up the buttons
+        dialogBuilder.setPositiveButton("OKAY!", (dialog, which) -> positiveDialogButtonClick(input));
+        dialogBuilder.setNegativeButton("Skip", (dialog, which) -> dialog.cancel());
+        //endregion
+
 
         guesses = view.findViewById(R.id.gaet);
         correctWord = view.findViewById(R.id.rigtigtOrd);
 
         gallow = view.findViewById(R.id.galgeBillede);
 
+        //region Array of gallow picturs
         //Creates a List of the galge images.
         gameStages = new ArrayList<>();
         gameStages.add(R.drawable.start);
@@ -123,7 +149,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         gameStages.add(R.drawable.p4);
         gameStages.add(R.drawable.p5);
         gameStages.add(R.drawable.p6);
-
+        //endregion
 
         level = "Intermediate";
 
@@ -137,11 +163,20 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    private void positiveDialogButtonClick(EditText input){
+        player_name = input.getText().toString();
+        score = new Highscore(player_name, game, getActivity());
+
+        score.insertPrefs();
+        score.getPrefs();
+        System.out.println("The word was: " + game.getOrdet() + "\nScore: " + score.getScore());
+    }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+            //region Case for keyboard case
             case R.id.q:
             case R.id.w:
             case R.id.e:
@@ -171,32 +206,29 @@ public class Game_frag extends Fragment implements View.OnClickListener {
             case R.id.b:
             case R.id.n:
             case R.id.m:
-
+            //endregion
                 if (game.erSpilletSlut()) {
                     break;
                 }
-
-                //handles the butten pressed.
+                //handles the button pressed.
                 keyboardPressed(v);
                 isGameOver();
-
                 break;
         }
     }
 
     private void isGameOver() {
         if (game.erSpilletSlut()) {
-            int musicID = R.raw.win;
+            int musicID;
             Bundle b = new Bundle();
             if (game.erSpilletVundet()) {
+                musicID = R.raw.win;
                 b.putString("result", winningMessage);
             } else {
                 musicID = R.raw.lose;
                 b.putString("result", losingMessage);
             }
-            b.putString("score", "You're score was: " + score.calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver() ,game.getAntalForkerteBogstaver()));
-
-            System.out.println("The word was: " + game.getOrdet() + "\nScore: " + score.calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver() ,game.getAntalForkerteBogstaver()));
+            dialogBuilder.show();
 
             changeSound(musicID);
             if(Settings_frag.isMusicEnabled()){
@@ -236,7 +268,12 @@ public class Game_frag extends Fragment implements View.OnClickListener {
             } else {
                 wrongGuess(guess);
             }
-            guesses.setText(guesses.getText().toString().concat(", ".concat(guess)));
+            if(guesses.getText().equals("You haven't guessed yet!")){
+                guesses.setText("You've gueesed on: ".concat(", ".concat(guess)));
+            }
+            else{
+                guesses.setText(guesses.getText().toString().concat(", ".concat(guess)));
+            }
         }
     }
 
@@ -276,8 +313,6 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
         getWords(level);
 
-        score = new Highscore();
-
         guesses.setText("You haven't guessed yet!");
 
         changeSound(R.raw.firecrackle);
@@ -288,29 +323,48 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     public void getWords(String level) {
 
-        new AsyncTask()  {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                try {
-                    game.hentOrdFraDr(level);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
+        new MyAsyncTask(this).execute();
 
-            @Override
-            protected void onPreExecute() {
-                System.out.println("pre execute");
-                correctWord.setText("Loading...");
-            }
-
-            @Override
-            protected void onPostExecute(Object object) {
-                System.out.println("post execute");
-                correctWord.setText(game.getSynligtOrd());
-            }
-        }.execute();
     }
+
+
+
+    //Create an inner class of an asyncTask
+    //region AsyncTask
+    private static class MyAsyncTask extends  AsyncTask<Void, Void, Void>{
+
+        private WeakReference<Game_frag> wr;
+        Game_frag game_frag;
+
+        MyAsyncTask(Game_frag newTask){
+            wr = new WeakReference<>(newTask);
+            game_frag = wr.get();
+        }
+
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                game_frag.game.hentOrdFraDr(game_frag.level);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            System.out.println("pre execute");
+            game_frag.correctWord.setText("Loading...");
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            System.out.println("post execute");
+            game_frag.correctWord.setText(game_frag.game.getSynligtOrd());
+        }
+    }
+    //endregion
 }
 

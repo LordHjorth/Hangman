@@ -50,7 +50,7 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
             score = b.getString("score");
         }
         resultText.setText(resultMessage);
-        scoreText.setText(score);
+        scoreText.setText("1000");
 
     }
 
