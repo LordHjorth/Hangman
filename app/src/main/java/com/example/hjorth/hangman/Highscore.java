@@ -1,23 +1,21 @@
 package com.example.hjorth.hangman;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
-public class Highscore extends Application {
+import static java.util.stream.Collectors.toMap;
 
-    SharedPreferences prefs;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
+public class Highscore {
 
     //player specific
     private long score;
@@ -32,14 +30,18 @@ public class Highscore extends Application {
 
     public Highscore(String name, Game_logic game, Context context){
         startTimeInSec = Calendar.getInstance().getTimeInMillis();
-        this.username = name;
+        setUsername(name);
         calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver(), game.getAntalKorrekteBogstaver());
-        prefs = context.getSharedPreferences("Highscores", MODE_PRIVATE);
+    }
+
+    public Highscore(String name, long score){
+        this.username = name;
+        this.score = score;
     }
 
     public void calculateScore(int wordLength, int correctGuesses, int wrongGuesses){
         long endTimeInSec = Calendar.getInstance().getTimeInMillis();
-        score = (wordLength + correctGuesses) * MULTIPLIER - ((startTimeInSec-endTimeInSec)/TO_SEC_CONV * wrongGuesses);
+        this.score = (wordLength + correctGuesses) * MULTIPLIER - ((startTimeInSec-endTimeInSec)/TO_SEC_CONV * wrongGuesses);
     }
 
     public String getUsername() {
@@ -55,25 +57,37 @@ public class Highscore extends Application {
     }
 
     public void insertPrefs(){
-        Set players = prefs.getStringSet("playerNames", new HashSet<>());
+        Set players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
         players.add(username);
 
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = HighscoreSharedPreferences.prefs.edit();
         editor.putStringSet("playerNames", players);
         editor.putString(username, username);
         editor.putLong(username, score);
         editor.commit();
     }
 
-    public void getPrefs(){
-        Set players = prefs.getStringSet("playerNames", new HashSet<>());
+    public static ArrayList<Highscore> getHighscores(){
+        Set players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
         HashMap<String, Long> scores = new HashMap<>();
         for(Object player : players){
-            scores.put(player.toString(), prefs.getLong(player.toString(), 0));
+            scores.put(player.toString(), HighscoreSharedPreferences.prefs.getLong(player.toString(), 0));
             System.out.println("name: " + player.toString() + "\nScore:  " + scores.get(player.toString()));
         }
 
-        System.out.println("Score set: " + scores);
+        Map<String, Long> sortedScores = scores
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+
+        ArrayList<Highscore> highscoreList = new ArrayList<>();
+        for(Map.Entry<String, Long> entry : sortedScores.entrySet()){
+            highscoreList.add(new Highscore(entry.getKey(), entry.getValue()));
+        }
+        return highscoreList;
     }
+
 
 }

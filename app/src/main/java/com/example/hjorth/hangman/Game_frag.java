@@ -1,7 +1,6 @@
 package com.example.hjorth.hangman;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -124,12 +123,14 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         //region Dialog initializer
         dialogBuilder = new AlertDialog.Builder(getActivity());
         final EditText input = new EditText(getActivity());
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         dialogBuilder.setView(input);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setTitle("Enter your name!");
 
         // Set up the buttons
-        dialogBuilder.setPositiveButton("OKAY!", (dialog, which) -> positiveDialogButtonClick(input));
+        dialogBuilder.setPositiveButton("Next!", (dialog, which) -> positiveDialogButtonClick(input));
         dialogBuilder.setNegativeButton("Skip", (dialog, which) -> dialog.cancel());
         //endregion
 
@@ -166,10 +167,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     private void positiveDialogButtonClick(EditText input){
         player_name = input.getText().toString();
         score = new Highscore(player_name, game, getActivity());
-
         score.insertPrefs();
-        score.getPrefs();
-        System.out.println("The word was: " + game.getOrdet() + "\nScore: " + score.getScore());
     }
 
     @Override
@@ -236,6 +234,9 @@ public class Game_frag extends Fragment implements View.OnClickListener {
             }
 
             b.putString("level", level);
+            //b.putLong("score", score.getScore());
+
+            game.showEndGameStatus();
             newGameOption.setArguments(b);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
@@ -274,6 +275,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
             else{
                 guesses.setText(guesses.getText().toString().concat(", ".concat(guess)));
             }
+            pressed.setBackgroundColor(1);
         }
     }
 
@@ -346,7 +348,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                game_frag.game.hentOrdFraDr(game_frag.level);
+                game_frag.game.hentOrdFraWeb(game_frag.level);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -124,7 +124,7 @@ public class Game_logic {
         return true;
     }
 
-    public void logStatus() {
+    public void showEndGameStatus() {
         System.out.println("---------- ");
         System.out.println("- ordet (skult) = " + ordet);
         System.out.println("- synligtOrd = " + synligtOrd);
@@ -147,11 +147,10 @@ public class Game_logic {
         return sb.toString();
     }
 
-    public void hentOrdFraDr(String level) throws Exception {
+    public void hentOrdFraWeb(String level) throws Exception {
         if(muligeOrd.isEmpty() || muligeOrd.size() < 1) {
 
-            String data = hentUrl("https://www.dr.dk");
-            //System.out.println("data = " + data);
+            String data = hentUrl("https://ordnet.dk/ddo/nyeste-ord-i-ddo");
 
             data = data.substring(data.indexOf("<body")). // fjern headere
                     replaceAll("<.+?>", " ").toLowerCase(). // fjern tags
@@ -165,8 +164,6 @@ public class Game_logic {
                     replaceAll(" [a-zæøå] ", " "). // fjern 1-bogstavsord
                     replaceAll(" [a-zæøå][a-zæøå] ", " "); // fjern 2-bogstavsord
 
-            System.out.println("data = " + data);
-            System.out.println("data = " + Arrays.asList(data.split("\\s+")));
             tempWords.clear();
             muligeOrd.clear();
             tempWords.addAll(new HashSet<>(Arrays.asList(data.split(" "))));
