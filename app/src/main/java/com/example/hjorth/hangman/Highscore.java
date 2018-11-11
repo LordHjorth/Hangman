@@ -1,6 +1,5 @@
 package com.example.hjorth.hangman;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
@@ -26,10 +25,8 @@ public class Highscore {
     private final int MULTIPLIER = 100;
     private final int TO_SEC_CONV = 1000;
 
-
-
-    public Highscore(String name, Game_logic game, Context context){
-        startTimeInSec = Calendar.getInstance().getTimeInMillis();
+    public Highscore(String name, Game_logic game){
+        startTimeInSec = game.getStartTime();
         setUsername(name);
         calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver(), game.getAntalKorrekteBogstaver());
     }
@@ -39,7 +36,7 @@ public class Highscore {
         this.score = score;
     }
 
-    public void calculateScore(int wordLength, int correctGuesses, int wrongGuesses){
+    private void calculateScore(int wordLength, int correctGuesses, int wrongGuesses){
         long endTimeInSec = Calendar.getInstance().getTimeInMillis();
         this.score = (wordLength + correctGuesses) * MULTIPLIER - ((startTimeInSec-endTimeInSec)/TO_SEC_CONV * wrongGuesses);
     }
@@ -57,17 +54,20 @@ public class Highscore {
     }
 
     public void insertPrefs(){
-        Set players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
+        Set<String> players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
         players.add(username);
 
         SharedPreferences.Editor editor = HighscoreSharedPreferences.prefs.edit();
         editor.putStringSet("playerNames", players);
+        if(username == "" || username == null) { username = "??????"; }
         editor.putString(username, username);
         editor.putLong(username, score);
         editor.commit();
     }
 
+    @SuppressWarnings("unchecked")
     public static ArrayList<Highscore> getHighscores(){
+
         Set players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
         HashMap<String, Long> scores = new HashMap<>();
         for(Object player : players){

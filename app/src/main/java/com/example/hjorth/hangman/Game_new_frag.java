@@ -43,17 +43,15 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
 
     private void setResultText(View v){
         String resultMessage = "Great job!";
-        String score = "0";
+        Long score = 0L;
         Bundle b = this.getArguments();
         if(b != null){
             resultMessage = b.getString("result");
-            score = b.getString("score");
+            score = b.getLong("score");
         }
         resultText.setText(resultMessage);
-        scoreText.setText("You scores: " + score);
-
+        scoreText.setText("You scored: " + score);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -78,6 +76,4 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
         }
 
     }
-
-
 }

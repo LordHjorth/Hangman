@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
 
 public class HighscoreListAdapater extends ArrayAdapter<Highscore> {
 
@@ -23,6 +21,7 @@ public class HighscoreListAdapater extends ArrayAdapter<Highscore> {
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.highscores_listitem, parent, false);
         }
+
         Highscore score  = getItem(position);
         TextView hname = convertView.findViewById(R.id.score_name);
         hname.setText(score.getUsername());

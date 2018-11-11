@@ -52,6 +52,8 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     private AlertDialog.Builder dialogBuilder;
 
+    Bundle next_frag_bundle = new Bundle();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -157,6 +159,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
         media = new MediaPlayer();
 
+
         //Starts the game
 
         newGame();
@@ -166,8 +169,13 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     private void positiveDialogButtonClick(EditText input){
         player_name = input.getText().toString();
-        score = new Highscore(player_name, game, getActivity());
+        score = new Highscore(player_name, game);
+        next_frag_bundle.putLong("score", score.getScore());
         score.insertPrefs();
+
+        newGameOption.setArguments(next_frag_bundle);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
     }
 
     @Override
@@ -218,28 +226,23 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     private void isGameOver() {
         if (game.erSpilletSlut()) {
             int musicID;
-            Bundle b = new Bundle();
             if (game.erSpilletVundet()) {
                 musicID = R.raw.win;
-                b.putString("result", winningMessage);
+                next_frag_bundle.putString("result", winningMessage + "\nYou succeeded in " + game.getBrugteBogstaver().size() + " tries! \nGood job!");
             } else {
                 musicID = R.raw.lose;
-                b.putString("result", losingMessage);
+                next_frag_bundle.putString("result", losingMessage + "\nThe word was: " + game.getOrdet());
             }
-            dialogBuilder.show();
 
             changeSound(musicID);
             if(Settings_frag.isMusicEnabled()){
                 media.start();
             }
 
-            b.putString("level", level);
-            //b.putLong("score", score.getScore());
-
             game.showEndGameStatus();
-            newGameOption.setArguments(b);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
+            next_frag_bundle.putString("level", level);
+
+            dialogBuilder.show();
 
         }
     }
@@ -329,8 +332,6 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     }
 
-
-
     //Create an inner class of an asyncTask
     //region AsyncTask
     private static class MyAsyncTask extends  AsyncTask<Void, Void, Void>{
@@ -365,6 +366,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Void v) {
             System.out.println("post execute");
             game_frag.correctWord.setText(game_frag.game.getSynligtOrd());
+            game_frag.game.showEndGameStatus();
         }
     }
     //endregion

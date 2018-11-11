@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 public class Game_level_frag extends Fragment implements View.OnClickListener {
 
@@ -65,8 +64,4 @@ public class Game_level_frag extends Fragment implements View.OnClickListener {
         }
 
     }
-
-
-
-
 }

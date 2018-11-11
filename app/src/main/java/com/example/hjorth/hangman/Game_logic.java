@@ -1,10 +1,5 @@
 package com.example.hjorth.hangman;
 
-import android.os.AsyncTask;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +23,7 @@ public class Game_logic {
     private boolean sidsteBogstavVarKorrekt;
     private boolean spilletErVundet;
     private boolean spilletErTabt;
+    private long startTime;
 
     public ArrayList<String> getBrugteBogstaver() {
         return brugteBogstaver;
@@ -65,9 +61,11 @@ public class Game_logic {
         return spilletErTabt || spilletErVundet;
     }
 
+    public long getStartTime() { return startTime; }
+
     //modified
     public Game_logic() {
-
+        startTime = System.currentTimeMillis();
     }
 
     private void nulstil() {
@@ -78,7 +76,6 @@ public class Game_logic {
         ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
         opdaterSynligtOrd();
     }
-
 
     private void opdaterSynligtOrd() {
         synligtOrd = "";
@@ -177,7 +174,7 @@ public class Game_logic {
     }
 
     private void sortWordsByLevel(String level){
-        int minLength = 0;
+        int minLength = 3;
         int maxLength = 12;
 
         if(level.equals("Beginner")){
@@ -199,6 +196,4 @@ public class Game_logic {
             }
         }
     }
-
-
 }
