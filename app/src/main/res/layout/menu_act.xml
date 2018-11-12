@@ -26,8 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1.2"
+            android:layout_weight="2.5"
             android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="13sp"
             android:text="@string/play" />
 
         <Button
@@ -39,6 +40,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="13sp"
             android:text="@string/scoresBtn" />
 
         <Button
@@ -48,8 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="13sp"
             android:text="@string/settings" />
 
         <Button
@@ -59,8 +62,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1.2"
+            android:layout_weight="2.5"
             android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="13sp"
             android:text="@string/help" />
     </LinearLayout>
 
