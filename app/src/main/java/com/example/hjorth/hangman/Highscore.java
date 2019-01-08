@@ -19,6 +19,9 @@ public class Highscore {
     //player specific
     private long score;
     private String username;
+    private boolean showing_username = true;
+
+    private String guessedWord = "";
 
     //for calculations
     private long startTimeInSec;
@@ -53,16 +56,29 @@ public class Highscore {
         return score;
     }
 
-    public void insertPrefs(){
+    public boolean isShowing_username() { return showing_username;  }
+
+    public void setShowing_username(boolean showing_username) { this.showing_username = showing_username;   }
+
+    public void setGuessedWord(String guessedWord) { this.guessedWord = guessedWord; }
+
+    public void insertPrefs(String word){
+        setGuessedWord(word);
+
         Set<String> players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
         players.add(username);
 
         SharedPreferences.Editor editor = HighscoreSharedPreferences.prefs.edit();
         editor.putStringSet("playerNames", players);
-        if(username == "" || username == null) { username = "??????"; }
+        if(username == "" || username == null) {
+            username = "¿Unknown?";
+        }
+
         editor.putString(username, username);
         editor.putLong(username, score);
+        editor.putString(username+"word", guessedWord);
         editor.commit();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -72,7 +88,6 @@ public class Highscore {
         HashMap<String, Long> scores = new HashMap<>();
         for(Object player : players){
             scores.put(player.toString(), HighscoreSharedPreferences.prefs.getLong(player.toString(), 0));
-            System.out.println("name: " + player.toString() + "\nScore:  " + scores.get(player.toString()));
         }
 
         Map<String, Long> sortedScores = scores
@@ -87,6 +102,10 @@ public class Highscore {
             highscoreList.add(new Highscore(entry.getKey(), entry.getValue()));
         }
         return highscoreList;
+    }
+
+    public static String getGuessedWord(String username){
+        return HighscoreSharedPreferences.prefs.getString(username+"word", "");
     }
 
 

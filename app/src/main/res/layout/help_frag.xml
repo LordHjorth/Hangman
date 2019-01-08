@@ -29,9 +29,9 @@
             android:id="@+id/editText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:text="To win this game you must guess the secret word before the man gets hanged! You can guess on one specific word at a time. For each wrong guess one more part of the man will appear on the image. It's possible to make a mistake 7 times before it is game over. GOOD LUCK! If you choose a higher level it is possible to get a higher score"
+            android:autoSizeTextType="uniform"
+            android:inputType="none"
+            android:text="To win this game you must guess the secret word before the man gets hanged! You can guess on one letter at a time. \n\nFor each wrong guess one more part of the man will appear on the image. It's possible to make a mistake 7 times before it is game over. \nBy choosing a higher level it is possible to get a higher score. \n\nGOOD LUCK!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

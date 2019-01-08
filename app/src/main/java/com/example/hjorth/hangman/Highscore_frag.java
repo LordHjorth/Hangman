@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class Highscore_frag extends Fragment{
+public class Highscore_frag extends Fragment {
 
     ListView highscoresListView;
+    HighscoreListAdapater adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -17,9 +20,10 @@ public class Highscore_frag extends Fragment{
 
         highscoresListView = view.findViewById(R.id.highscoreList);
 
-        HighscoreListAdapater adapater = new HighscoreListAdapater(getActivity(), Highscore.getHighscores());
-        highscoresListView.setAdapter(adapater);
+        adapter = new HighscoreListAdapater(getActivity(), Highscore.getHighscores());
+        highscoresListView.setAdapter(adapter);
 
         return view;
     }
+
 }

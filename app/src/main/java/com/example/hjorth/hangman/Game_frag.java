@@ -133,7 +133,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
         // Set up the buttons
         dialogBuilder.setPositiveButton("Next!", (dialog, which) -> positiveDialogButtonClick(input));
-        dialogBuilder.setNegativeButton("Skip", (dialog, which) -> dialog.cancel());
+        dialogBuilder.setNegativeButton("Skip", (dialog, which) -> negativeDialogButtonClick());
         //endregion
 
 
@@ -171,8 +171,18 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         player_name = input.getText().toString();
         score = new Highscore(player_name, game);
         next_frag_bundle.putLong("score", score.getScore());
-        score.insertPrefs();
+        next_frag_bundle.putBoolean("won", true);
 
+        String guessedWord = game.getOrdet();
+        score.insertPrefs(guessedWord);
+
+        newGameOption.setArguments(next_frag_bundle);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
+    }
+
+    private void negativeDialogButtonClick(){
+        next_frag_bundle.putBoolean("won", false);
         newGameOption.setArguments(next_frag_bundle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
