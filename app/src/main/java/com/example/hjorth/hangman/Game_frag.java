@@ -6,8 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,8 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     private MediaPlayer media;
 
-    private String level;
+    private String level = "Beginner";
+    private String website = "https://ordnet.dk/ddo/nyeste-ord-i-ddo";
 
     private Game_new_frag newGameOption;
 
@@ -167,25 +167,21 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void positiveDialogButtonClick(EditText input){
+    private void positiveDialogButtonClick(EditText input) {
         player_name = input.getText().toString();
         score = new Highscore(player_name, game);
         next_frag_bundle.putLong("score", score.getScore());
-        next_frag_bundle.putBoolean("won", true);
 
         String guessedWord = game.getOrdet();
         score.insertPrefs(guessedWord);
 
         newGameOption.setArguments(next_frag_bundle);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, newGameOption).commit();
     }
 
-    private void negativeDialogButtonClick(){
-        next_frag_bundle.putBoolean("won", false);
+    private void negativeDialogButtonClick() {
         newGameOption.setArguments(next_frag_bundle);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment, newGameOption).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, newGameOption).commit();
     }
 
     @Override
@@ -222,7 +218,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
             case R.id.b:
             case R.id.n:
             case R.id.m:
-            //endregion
+                //endregion
                 if (game.erSpilletSlut()) {
                     break;
                 }
@@ -238,18 +234,21 @@ public class Game_frag extends Fragment implements View.OnClickListener {
             int musicID;
             if (game.erSpilletVundet()) {
                 musicID = R.raw.win;
-                next_frag_bundle.putString("result", winningMessage + "\nYou succeeded in " + game.getBrugteBogstaver().size() + " tries! \nGood job!");
+                next_frag_bundle.putBoolean("won", true);
+                next_frag_bundle.putString("result", winningMessage + "\nYou succeeded in " + game.getBrugteBogstaver().size() + " tries!");
             } else {
                 musicID = R.raw.lose;
+                next_frag_bundle.putBoolean("won", false);
                 next_frag_bundle.putString("result", losingMessage + "\nThe word was: " + game.getOrdet());
             }
 
             changeSound(musicID);
-            if(Settings_frag.isMusicEnabled()){
+            if (Settings_frag.isMusicEnabled()) {
                 media.start();
             }
 
             game.showEndGameStatus();
+            next_frag_bundle.putString("website", website);
             next_frag_bundle.putString("level", level);
 
             dialogBuilder.show();
@@ -258,7 +257,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     }
 
     private void changeSound(int resID) {
-        if(media.isPlaying())
+        if (media.isPlaying())
             media.stop();
 
         media = MediaPlayer.create(getActivity(), resID);
@@ -275,29 +274,28 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         Button pressed = v.findViewById(v.getId());
         String guess = pressed.getText().toString();
 
-        if(!game.getBrugteBogstaver().contains(guess)){
+        if (!game.getBrugteBogstaver().contains(guess)) {
             game.gætBogstav(guess);
             if (game.erSidsteBogstavKorrekt()) {
                 correctGuess(guess);
             } else {
                 wrongGuess(guess);
             }
-            if(guesses.getText().equals("You haven't guessed yet!")){
+            if (guesses.getText().equals("You haven't guessed yet!")) {
                 guesses.setText("You've gueesed on: ".concat(", ".concat(guess)));
-            }
-            else{
+            } else {
                 guesses.setText(guesses.getText().toString().concat(", ".concat(guess)));
             }
             pressed.setBackgroundColor(1);
         }
     }
 
-    private void correctGuess(String guess){
+    private void correctGuess(String guess) {
         Toast.makeText(getActivity(), guess + " was correct!", Toast.LENGTH_SHORT).show();
         correctWord.setText(game.getSynligtOrd());
     }
 
-    private void wrongGuess(String guess){
+    private void wrongGuess(String guess) {
         //Starts playing the fire crackling
         if (!media.isPlaying() && Settings_frag.isMusicEnabled()) {
             media.start();
@@ -320,13 +318,14 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         //set new gameLevel
         Bundle bundle = this.getArguments();
 
-        if(bundle != null)
-        {
+        if (bundle != null) {
             level = bundle.getString("level");
+            website = bundle.getString("website");
+
         }
         game = new Game_logic();
 
-        getWords(level);
+        getWords();
 
         guesses.setText("You haven't guessed yet!");
 
@@ -336,7 +335,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
         media.setVolume(soundLevel, soundLevel);
     }
 
-    public void getWords(String level) {
+    public void getWords() {
 
         new MyAsyncTask(this).execute();
 
@@ -344,22 +343,21 @@ public class Game_frag extends Fragment implements View.OnClickListener {
 
     //Create an inner class of an asyncTask
     //region AsyncTask
-    private static class MyAsyncTask extends  AsyncTask<Void, Void, Void>{
+    private static class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private WeakReference<Game_frag> wr;
         Game_frag game_frag;
 
-        MyAsyncTask(Game_frag newTask){
+        MyAsyncTask(Game_frag newTask) {
             wr = new WeakReference<>(newTask);
             game_frag = wr.get();
         }
 
 
-
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                game_frag.game.hentOrdFraWeb(game_frag.level);
+                game_frag.game.hentOrdFraWeb(game_frag.level, game_frag.website);
             } catch (Exception e) {
                 e.printStackTrace();
             }

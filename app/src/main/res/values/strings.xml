@@ -50,4 +50,14 @@
     <string name="keyB">b</string>
     <string name="keyN">n</string>
     <string name="keyM">m</string>
+
+    <string-array name="websites">
+        <item>https://www.dr.dk</item>
+        <item>http://tv2.dk</item>
+        <item>https://da.wikipedia.org/wiki/Forside</item>
+        <item>https://politiken.dk</item>
+        <item>https://www.bt.dk</item>
+        <item>https://videnskab.dk</item>
+        <item>https://www.dtu.dk</item>
+    </string-array>
 </resources>

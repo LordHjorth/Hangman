@@ -1,8 +1,10 @@
 package com.example.hjorth.hangman;
 
-import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
+import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,7 +23,7 @@ public class Main_menu_act extends AppCompatActivity implements View.OnClickList
         helpFrag = new Help_frag();
         scoreFrag = new Highscore_frag();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment, playFrag).commit();
+        getFragmentManager().beginTransaction().add(R.id.fragment, playFrag).commit();
 
         helpBtn = findViewById(R.id.rules);
         settingsBtn = findViewById(R.id.SettingsBtn);
@@ -36,17 +38,23 @@ public class Main_menu_act extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if(v == helpBtn){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, helpFrag).commit();
+        if (v == helpBtn) {
+            getFragmentManager().beginTransaction().replace(R.id.fragment, helpFrag).commit();
         }
-        if(v == settingsBtn){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, settingsFrag).commit();
+        if (v == settingsBtn) {
+            getFragmentManager().beginTransaction().replace(R.id.fragment, settingsFrag).commit();
         }
-        if(v == scoresBtn){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, scoreFrag).commit();
+        if (v == scoresBtn) {
+            getFragmentManager().beginTransaction().replace(R.id.fragment, scoreFrag).commit();
         }
-        if(v == playBtn){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, playFrag).commit();
+        if (v == playBtn) {
+            getFragmentManager().beginTransaction().replace(R.id.fragment, playFrag).commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        getFragmentManager().popBackStack();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, playFrag).addToBackStack(null).commit();
     }
 }

@@ -3,9 +3,7 @@ package com.example.hjorth.hangman;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,17 +47,17 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void setResultText(View v){
+    private void setResultText(View v) {
         String resultMessage = "Great job!";
-        boolean won = true;
+        boolean won = false;
         Long score = 0L;
         Bundle b = this.getArguments();
-        if(b != null){
+        if (b != null) {
             resultMessage = b.getString("result");
             won = b.getBoolean("won");
             score = b.getLong("score");
         }
-        if(won){
+        if (won) {
             viewKonfetti.build()
                     .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                     .setDirection(0.0, 359.0)
@@ -78,23 +76,21 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if(v == yes){
+        if (v == yes) {
             //TODO: Close fragment and start new game
             Bundle b = this.getArguments();
-            if(b != null){
+            if (b != null) {
                 String sameLevel = b.getString("level");
-                b.putString("sameLevel", sameLevel);
+                String sameWebsite = b.getString("website");
+                b.putString("level", sameLevel);
+                b.putString("website", sameWebsite);
             }
             newGame.setArguments(b);
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment, newGame).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment, newGame).commit();
         }
-        if(v == no){
+        if (v == no) {
             //TODO: Close fragment and go to Main menu
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment, menu).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment, menu).commit();
         }
 
     }

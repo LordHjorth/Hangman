@@ -28,20 +28,20 @@ public class Highscore {
     private final int MULTIPLIER = 100;
     private final int TO_SEC_CONV = 1000;
 
-    public Highscore(String name, Game_logic game){
+    public Highscore(String name, Game_logic game) {
         startTimeInSec = game.getStartTime();
         setUsername(name);
         calculateScore(game.getOrdet().length(), game.getAntalKorrekteBogstaver(), game.getAntalKorrekteBogstaver());
     }
 
-    public Highscore(String name, long score){
+    public Highscore(String name, long score) {
         this.username = name;
         this.score = score;
     }
 
-    private void calculateScore(int wordLength, int correctGuesses, int wrongGuesses){
+    private void calculateScore(int wordLength, int correctGuesses, int wrongGuesses) {
         long endTimeInSec = Calendar.getInstance().getTimeInMillis();
-        this.score = (wordLength + correctGuesses) * MULTIPLIER - ((startTimeInSec-endTimeInSec)/TO_SEC_CONV * wrongGuesses);
+        this.score = (wordLength + correctGuesses) * MULTIPLIER - ((startTimeInSec - endTimeInSec) / TO_SEC_CONV * wrongGuesses);
     }
 
     public String getUsername() {
@@ -56,13 +56,19 @@ public class Highscore {
         return score;
     }
 
-    public boolean isShowing_username() { return showing_username;  }
+    public boolean isShowing_username() {
+        return showing_username;
+    }
 
-    public void setShowing_username(boolean showing_username) { this.showing_username = showing_username;   }
+    public void setShowing_username(boolean showing_username) {
+        this.showing_username = showing_username;
+    }
 
-    public void setGuessedWord(String guessedWord) { this.guessedWord = guessedWord; }
+    public void setGuessedWord(String guessedWord) {
+        this.guessedWord = guessedWord;
+    }
 
-    public void insertPrefs(String word){
+    public void insertPrefs(String word) {
         setGuessedWord(word);
 
         Set<String> players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
@@ -70,23 +76,23 @@ public class Highscore {
 
         SharedPreferences.Editor editor = HighscoreSharedPreferences.prefs.edit();
         editor.putStringSet("playerNames", players);
-        if(username == "" || username == null) {
+        if (username == "" || username == null) {
             username = "¿Unknown?";
         }
 
         editor.putString(username, username);
         editor.putLong(username, score);
-        editor.putString(username+"word", guessedWord);
+        editor.putString(username + "word", guessedWord);
         editor.commit();
 
     }
 
     @SuppressWarnings("unchecked")
-    public static ArrayList<Highscore> getHighscores(){
+    public static ArrayList<Highscore> getHighscores() {
 
         Set players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
         HashMap<String, Long> scores = new HashMap<>();
-        for(Object player : players){
+        for (Object player : players) {
             scores.put(player.toString(), HighscoreSharedPreferences.prefs.getLong(player.toString(), 0));
         }
 
@@ -98,14 +104,14 @@ public class Highscore {
 
 
         ArrayList<Highscore> highscoreList = new ArrayList<>();
-        for(Map.Entry<String, Long> entry : sortedScores.entrySet()){
+        for (Map.Entry<String, Long> entry : sortedScores.entrySet()) {
             highscoreList.add(new Highscore(entry.getKey(), entry.getValue()));
         }
         return highscoreList;
     }
 
-    public static String getGuessedWord(String username){
-        return HighscoreSharedPreferences.prefs.getString(username+"word", "");
+    public static String getGuessedWord(String username) {
+        return HighscoreSharedPreferences.prefs.getString(username + "word", "");
     }
 
 

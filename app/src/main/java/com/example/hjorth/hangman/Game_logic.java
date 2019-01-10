@@ -12,7 +12,9 @@ import java.util.Random;
 //THIS CLASS IS BORROWED FROM https://github.com/nordfalk/Galgeleg/blob/master/src/galgeleg/Galgelogik.java
 public class Game_logic {
 
-    /** AHT afprøvning er muligeOrd synlig på pakkeniveau */
+    /**
+     * AHT afprøvning er muligeOrd synlig på pakkeniveau
+     */
     private ArrayList<String> muligeOrd = new ArrayList<>();
     private ArrayList<String> tempWords = new ArrayList<>();
     private String ordet;
@@ -61,7 +63,9 @@ public class Game_logic {
         return spilletErTabt || spilletErVundet;
     }
 
-    public long getStartTime() { return startTime; }
+    public long getStartTime() {
+        return startTime;
+    }
 
     //modified
     public Game_logic() {
@@ -144,10 +148,10 @@ public class Game_logic {
         return sb.toString();
     }
 
-    public void hentOrdFraWeb(String level) throws Exception {
-        if(muligeOrd.isEmpty() || muligeOrd.size() < 1) {
+    public void hentOrdFraWeb(String level, String website) throws Exception {
+        if (muligeOrd.isEmpty() || muligeOrd.size() < 1) {
 
-            String data = hentUrl("https://ordnet.dk/ddo/nyeste-ord-i-ddo");
+            String data = hentUrl(website);
 
             data = data.substring(data.indexOf("<body")). // fjern headere
                     replaceAll("<.+?>", " ").toLowerCase(). // fjern tags
@@ -173,25 +177,25 @@ public class Game_logic {
         }
     }
 
-    private void sortWordsByLevel(String level){
+    private void sortWordsByLevel(String level) {
         int minLength = 3;
         int maxLength = 12;
 
-        if(level.equals("Beginner")){
+        if (level.equals("Beginner")) {
             minLength = 3;
             maxLength = 6;
         }
-        if(level.equals("Intermediate")){
+        if (level.equals("Intermediate")) {
             minLength = 7;
             maxLength = 10;
         }
-        if(level.equals("Pro")){
+        if (level.equals("Pro")) {
             minLength = 11;
             maxLength = 100;
         }
 
-        for(String word : tempWords){
-            if(word.length() >= minLength && word.length() <= maxLength){
+        for (String word : tempWords) {
+            if (word.length() >= minLength && word.length() <= maxLength) {
                 muligeOrd.add(word);
             }
         }
