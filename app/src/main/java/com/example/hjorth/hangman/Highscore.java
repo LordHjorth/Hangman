@@ -19,7 +19,6 @@ public class Highscore {
     //player specific
     private long score;
     private String username;
-    private boolean showing_username = true;
 
     private String guessedWord = "";
 
@@ -56,14 +55,6 @@ public class Highscore {
         return score;
     }
 
-    public boolean isShowing_username() {
-        return showing_username;
-    }
-
-    public void setShowing_username(boolean showing_username) {
-        this.showing_username = showing_username;
-    }
-
     public void setGuessedWord(String guessedWord) {
         this.guessedWord = guessedWord;
     }
@@ -76,18 +67,17 @@ public class Highscore {
 
         SharedPreferences.Editor editor = HighscoreSharedPreferences.prefs.edit();
         editor.putStringSet("playerNames", players);
-        if (username == "" || username == null) {
+        if (username.equals("") || username == null) {
             username = "¿Unknown?";
         }
 
         editor.putString(username, username);
         editor.putLong(username, score);
         editor.putString(username + "word", guessedWord);
-        editor.commit();
+        editor.apply();
 
     }
 
-    @SuppressWarnings("unchecked")
     public static ArrayList<Highscore> getHighscores() {
 
         Set players = HighscoreSharedPreferences.prefs.getStringSet("playerNames", new HashSet<>());
@@ -113,6 +103,4 @@ public class Highscore {
     public static String getGuessedWord(String username) {
         return HighscoreSharedPreferences.prefs.getString(username + "word", "");
     }
-
-
 }

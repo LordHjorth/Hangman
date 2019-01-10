@@ -76,8 +76,9 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+        Main_menu_act.exitGame = 0;
+
         if (v == yes) {
-            //TODO: Close fragment and start new game
             Bundle b = this.getArguments();
             if (b != null) {
                 String sameLevel = b.getString("level");
@@ -89,7 +90,6 @@ public class Game_new_frag extends Fragment implements View.OnClickListener {
             getFragmentManager().beginTransaction().replace(R.id.fragment, newGame).commit();
         }
         if (v == no) {
-            //TODO: Close fragment and go to Main menu
             getFragmentManager().beginTransaction().replace(R.id.fragment, menu).commit();
         }
 

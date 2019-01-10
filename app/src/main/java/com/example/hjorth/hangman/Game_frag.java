@@ -45,14 +45,13 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     private final String winningMessage = "EEEEEEEEY! Congrats! You won!";
     private final String losingMessage = "You're a loser.";
 
-    private Highscore_frag highscore_frag;
     private Highscore score;
 
     private String player_name = "Unkown";
 
     private AlertDialog.Builder dialogBuilder;
 
-    Bundle next_frag_bundle = new Bundle();
+    private Bundle next_frag_bundle = new Bundle();
 
     @Nullable
     @Override
@@ -168,6 +167,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     }
 
     private void positiveDialogButtonClick(EditText input) {
+        Main_menu_act.exitGame = 0;
         player_name = input.getText().toString();
         score = new Highscore(player_name, game);
         next_frag_bundle.putLong("score", score.getScore());
@@ -180,6 +180,7 @@ public class Game_frag extends Fragment implements View.OnClickListener {
     }
 
     private void negativeDialogButtonClick() {
+        Main_menu_act.exitGame = 0;
         newGameOption.setArguments(next_frag_bundle);
         getFragmentManager().beginTransaction().replace(R.id.fragment, newGameOption).commit();
     }

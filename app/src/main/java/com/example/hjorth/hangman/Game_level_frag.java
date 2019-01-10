@@ -70,6 +70,7 @@ public class Game_level_frag extends Fragment implements View.OnClickListener {
             b.putString("website", spinner.getSelectedItem().toString());
             playGame.setArguments(b);
 
+            Main_menu_act.exitGame = 0;
             getFragmentManager().beginTransaction().replace(R.id.fragment, playGame).commit();
         }
 

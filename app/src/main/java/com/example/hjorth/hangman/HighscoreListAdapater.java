@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class HighscoreListAdapater extends ArrayAdapter<Highscore> implements View.OnClickListener {
@@ -25,7 +22,7 @@ public class HighscoreListAdapater extends ArrayAdapter<Highscore> implements Vi
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.highscores_listitem, parent, false);
         }
 
@@ -41,7 +38,7 @@ public class HighscoreListAdapater extends ArrayAdapter<Highscore> implements Vi
 
     @Override
     public void onClick(View v) {
-        TextView item = (TextView)v;
+        TextView item = (TextView) v;
         String guessedWord = Highscore.getGuessedWord(item.getText().toString());
         new MyAsyncTask(item, guessedWord).execute();
     }
@@ -52,11 +49,10 @@ public class HighscoreListAdapater extends ArrayAdapter<Highscore> implements Vi
         String tempText = "";
         String guessedWord;
 
-        MyAsyncTask(TextView view, String guessedWord){
+        MyAsyncTask(TextView view, String guessedWord) {
             this.view = view;
             this.guessedWord = guessedWord;
         }
-
 
 
         @Override
@@ -74,8 +70,8 @@ public class HighscoreListAdapater extends ArrayAdapter<Highscore> implements Vi
 
         @Override
         protected void onPreExecute() {
-            tempText = view.getText().toString();
-            view.setText("The word was: " + guessedWord );
+            tempText = "The word was: " + view.getText().toString();
+            view.setText(guessedWord);
             System.out.println("pre execute");
         }
 
